@@ -14,7 +14,7 @@ replacement for it.
   plugin that ships a copy, so a stale copy in one plugin can never fatal or
   restyle another.
 
-Current version: **0.20.0** - see [`CHANGELOG.md`](CHANGELOG.md).
+Current version: **0.21.0** - see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
@@ -50,7 +50,7 @@ echo "vendor/perxel-ui/ is now at v${VERSION}"
 ```
 
 ```sh
-bin/update-ui.sh 0.20.0
+bin/update-ui.sh 0.21.0
 ```
 
 Commit `vendor/perxel-ui/` (add a `.gitignore` exception if `vendor/` is
@@ -64,7 +64,7 @@ In the plugin's main file, after its own constants:
 ```php
 require_once __DIR__ . '/vendor/perxel-ui/loader.php';
 Perxel_UI_Loader::register(
-    '0.20.0',
+    '0.21.0',
     __DIR__ . '/vendor/perxel-ui',
     plugins_url( 'vendor/perxel-ui', __FILE__ )
 );
@@ -131,12 +131,13 @@ Perxel_UI_Layout::close();
 | --- | --- |
 | `enqueue()` | Registers the kit CSS/JS under the shared `perxel-ui` handle. |
 | `notice( $type, $html, $args )` | `success\|warning\|error\|info`, on WP `.notice`. `$args`: `dismissible`, `inline`. |
-| `progress_bar( $pct, $args )` | Standalone bar. `$args`: `id`, `label`. |
+| `progress_bar( $pct, $args )` | Standalone full-width bar. `$args`: `id`, `label`. |
+| `meter( $pct, $args )` | Compact inline meter for a `rows()` value slot - a short track with the percentage as its label, at the row's height. `$args`: `id` (live updates target `.pxui-meter__fill` / `.pxui-meter__text`), `text` (default `"N%"`, `''` hides it), `width` (px, default 96), `tone` (`good`/`warn`/`bad`). |
 | `card( $args )` | `title`, `body`, `actions`, `id`, `class`. |
 | `rows( $groups )` | iOS-style grouped settings list. Flat row list, or groups `[ 'title' => …, 'rows' => [ … ] ]`. Row: `label` left, `content` right, plus `sub`, `tone`, `icon` (`good`/`warn`/`bad`/`muted` status dot, or trusted-HTML glyph). A row with a `summary` key is a native `<details>` disclosure. A group takes `title_action` (trusted HTML pinned right of the title), `'danger' => true` (destructive zone), and `note` (muted footnote). |
 | `toggle( $args )` | An `<input type="checkbox" class="pxui-toggle">` - the kit renders it as an iOS switch. `name`, `checked`, `value`, `id`, `form`, `label`. A bare checkbox (no class) is a square box with a tick. |
 | `checkbox_group( $args )` | A "pick several" list rendered as selectable pills. `options`, `name`, `form`, `selected`. |
-| `code( $text, $args )` | Read-only preformatted block - scrolls sideways. `$args`: `label`, `id`. |
+| `code( $text, $args )` | Read-only preformatted block - scrolls both ways, height-capped at `24em`. `$args`: `label`, `id`. |
 | `spinner()` | Inline CSS loading spinner. |
 
 ### Escaping contract
@@ -171,6 +172,49 @@ The kit ships a few lines of vanilla JS, no dependencies:
   a client can be told "go here, click this, done". One primary action per
   screen (pinned in the sticky title bar via `open()`'s `actions`).
 
+## Improving a screen
+
+The checklist for tidying an existing admin page onto the kit's vocabulary.
+It is what turned the wp-ai-translate run screen (a loose `<p>` caption, a
+floating progress bar, and a 5-row stats card) into one grouped list.
+
+**One card, not a stack of loose elements.** A screen section is a single
+`rows()` group. Anything above or beside it - a caption line, a status
+sentence, a standalone bar - is a candidate to fold *into* that group rather
+than sit outside it competing for the eye.
+
+**Identity is group chrome, not a row.** The "what am I looking at" facts (an
+id, a source → target pair, a start time, a mode) go in the group's `title`,
+`title_action` (a badge or link, pinned right), and `note` (the muted
+footnote under the card). Never spend a row - or a bare `<p>` - on them.
+
+**Every row is the same shape.** `label` left, value right, optional `sub`
+under the label, optional status `icon`. If a figure needs a bar, it uses
+`meter()` in the value slot so the row keeps its height. A row that breaks the
+rhythm (a full-width bar, a big block) belongs outside the list or in a
+`card()`.
+
+**Merge related figures.** Two rows that are facets of one thing become one
+row with a `sub`: "Errors `2`" + "Skipped `1`" → one **Errors** row, `2` as
+the value, `1 skipped` as the sub. Aim for 3-4 rows in a stats group, not 6-8.
+
+**A status message can be a row.** A "finished" / "needs attention" line does
+not need its own `notice()` above the card - give the relevant row an `icon`
+(`good` / `bad`), retitle its `label`, and put the sentence in `sub`. One less
+box on the page. Keep `notice()` for things the user must act on now.
+
+**Disclosure belongs to its group.** An activity log, a raw payload, a
+"details" reveal is the *last row* of the group it describes (`summary` +
+`details`), not a second untitled `rows()` block after it. Long `code()`
+inside scrolls and is height-capped, so it will not blow out the layout.
+
+**Live regions need stable ids, not re-rendered markup.** When JS updates a
+figure during a run, it sets `.textContent` on a `<span id>` the server
+rendered once - it never rebuilds the row. Put an `id` on every value the loop
+touches (and on the `meter()` wrapper); the PHP view owns layout, the JS owns
+numbers. A full state change (run finished) is a page reload, re-rendered by
+PHP.
+
 ## What belongs in the kit
 
 - **In the kit:** anything another Perxel plugin could plausibly reuse - layout,
@@ -194,7 +238,7 @@ loader tolerates its absence.
 
 | Plugin | Vendored version |
 | --- | --- |
-| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.20.0 (first consumer) |
+| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.21.0 (first consumer) |
 | [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.15.0 (copied `ui/`; migrates later) |
 
 ## License

@@ -3,6 +3,22 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.21.0
+
+- **`meter()`** - a compact inline progress meter (`Perxel_UI::meter( $pct, $args )`)
+  for a `rows()` value slot: a short track with the percentage as its label. It
+  keeps the row height, so a "how far along" figure sits among the other numbers
+  on a screen instead of floating above them as a standalone `progress_bar()`
+  block. `$args`: `id` (for live updates - set `.pxui-meter__fill` width and
+  `.pxui-meter__text` text), `text` (label before the track, default `"N%"`,
+  `''` to hide), `width` (track px, default 96), `tone` (`good`/`warn`/`bad`).
+  Additive.
+- **`code()` blocks are height-capped.** `.pxui-code` now scrolls in both
+  directions and stops growing at `24em`, so a long log or config dump no longer
+  pushes the rest of a screen off the page. Visual-only; no API change.
+- **Screen patterns** added to `README.md` ("Improving a screen") - the
+  checklist for tidying an existing admin page onto the kit's vocabulary.
+
 ## 0.20.0
 
 - **Unsaved-changes guard.** Add `data-pxui-dirty-guard` to a `<form>` and the
