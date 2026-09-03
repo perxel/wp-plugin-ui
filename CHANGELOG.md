@@ -3,6 +3,21 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.20.0
+
+- **Unsaved-changes guard.** Add `data-pxui-dirty-guard` to a `<form>` and the
+  kit snapshots its fields on load; if any field then differs, leaving the page
+  (menu link, back button, closing the tab) trips the browser's native
+  "Leave site?" prompt. The guard clears when that form submits. Additive - no
+  existing screen changes until a form opts in.
+  - Fields that are `[disabled]`, `[readonly]`, `[type=hidden]`, buttons, or
+    carry `data-pxui-dirty-ignore` are left out of the snapshot.
+  - `pxui.dirtyGuard.mark( form )` forces the form dirty for state that changed
+    without a field event (e.g. a hidden input written by script);
+    `clear( form )` / `resnapshot( form )` are the counterparts.
+  - The native prompt text is fixed by the browser; the attribute takes no
+    value.
+
 ## 0.19.0
 
 - **Checkbox default flipped.** An `<input type="checkbox">` in `.pxui-wrap` is

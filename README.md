@@ -14,7 +14,7 @@ replacement for it.
   plugin that ships a copy, so a stale copy in one plugin can never fatal or
   restyle another.
 
-Current version: **0.19.0** - see [`CHANGELOG.md`](CHANGELOG.md).
+Current version: **0.20.0** - see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
@@ -50,7 +50,7 @@ echo "vendor/perxel-ui/ is now at v${VERSION}"
 ```
 
 ```sh
-bin/update-ui.sh 0.19.0
+bin/update-ui.sh 0.20.0
 ```
 
 Commit `vendor/perxel-ui/` (add a `.gitignore` exception if `vendor/` is
@@ -64,14 +64,14 @@ In the plugin's main file, after its own constants:
 ```php
 require_once __DIR__ . '/vendor/perxel-ui/loader.php';
 Perxel_UI_Loader::register(
-    '0.19.0',
+    '0.20.0',
     __DIR__ . '/vendor/perxel-ui',
     plugins_url( 'vendor/perxel-ui', __FILE__ )
 );
 ```
 
 The version string passed here is what the "highest wins" loader compares -
-keep it equal to the tag you vendored (currently 0.19.0).
+keep it equal to the tag you vendored (currently 0.20.0).
 
 ### 3. Use it in an admin-page callback
 
@@ -151,6 +151,15 @@ echo Perxel_UI::rows( $groups ); // phpcs:ignore WordPress.Security.EscapeOutput
 
 ---
 
+## Client behaviour (`assets/ui.js`)
+
+The kit ships a few lines of vanilla JS, no dependencies:
+
+| Hook | Effect |
+| --- | --- |
+| `data-pxui-confirm="message"` on any element | Click is blocked unless the native confirm is accepted. For destructive actions. |
+| `data-pxui-dirty-guard` on a `<form>` | The form is snapshotted on load; if a field then differs, leaving the page trips the browser's native "Leave site?" prompt. Cleared when the form submits. `[disabled]` / `[readonly]` / `[type=hidden]` / button fields and anything under `data-pxui-dirty-ignore` are excluded. Script that changes state the user should be warned about calls `pxui.dirtyGuard.mark( form )` (`clear` / `resnapshot` undo it). The prompt text is fixed by the browser. |
+
 ## UI rules
 
 - **No em dashes** (or en dashes) anywhere - strings, comments, docs. Plain
@@ -185,7 +194,7 @@ loader tolerates its absence.
 
 | Plugin | Vendored version |
 | --- | --- |
-| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.19.0 (first consumer) |
+| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.20.0 (first consumer) |
 | [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.15.0 (copied `ui/`; migrates later) |
 
 ## License
