@@ -3,6 +3,19 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.17.0
+
+- Form fields in a row group now share one treatment: `input[type="password"]`
+  gets the same compact-field style as the other text inputs, and `<textarea>`
+  (in row content or in a disclosure reveal) is styled to match — hairline box,
+  hover/focus ring, `font:inherit` (no browser-monospace fallback),
+  `resize:vertical`. `:read-only` fields render as a muted, copy-me value.
+- `rows()` rows take `'stacked' => true` — the label sits on its own line with
+  the control full-width beneath. New hook `.pxui-row--stacked`. For a long
+  text field or a textarea that the right-aligned value slot would squeeze.
+- Add `.pxui-mono` — opt a field into a monospace face.
+- Additive — new CSS on existing markup plus one optional row key.
+
 ## 0.16.0
 
 - The kit now lives in its own repository, `perxel/wp-plugin-ui`. Consumers
