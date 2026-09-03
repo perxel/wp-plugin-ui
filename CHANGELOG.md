@@ -3,6 +3,23 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.17.2
+
+- **Removed `'stacked'`** (added in 0.17.0, never shipped in a consumer). It was
+  a new row layout that did not belong in the "icon / label / content /
+  disclosure" vocabulary. Its CSS is gone.
+- `rows()` groups take `title_action` - trusted HTML (a button) pinned to the
+  right of the group title. New hooks `.pxui-rows__titlebar`,
+  `.pxui-rows__title-action`.
+- Row `icon` gains a `muted` preset - a small neutral grey dot for a
+  "not checked yet" state alongside `good` / `warn` / `bad`.
+- Wide text inputs used as row content now fill the value slot (up to 340px)
+  instead of sizing to their text, so two fields in a group line up.
+- **UI rule:** if a row needs both an input and an action button, do not put
+  them on the same row - a row has little room. Either auto-run the action a
+  short debounce after the user stops typing, or lift the action to a
+  group-level `title_action`.
+
 ## 0.17.1
 
 - House rule: no em dashes anywhere. Swept the showcase strings, docs and code

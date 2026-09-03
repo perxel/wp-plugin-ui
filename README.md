@@ -14,7 +14,7 @@ replacement for it.
   plugin that ships a copy, so a stale copy in one plugin can never fatal or
   restyle another.
 
-Current version: **0.17.1** - see [`CHANGELOG.md`](CHANGELOG.md).
+Current version: **0.17.2** - see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
@@ -50,7 +50,7 @@ echo "vendor/perxel-ui/ is now at v${VERSION}"
 ```
 
 ```sh
-bin/update-ui.sh 0.17.1
+bin/update-ui.sh 0.17.2
 ```
 
 Commit `vendor/perxel-ui/` (add a `.gitignore` exception if `vendor/` is
@@ -64,14 +64,14 @@ In the plugin's main file, after its own constants:
 ```php
 require_once __DIR__ . '/vendor/perxel-ui/loader.php';
 Perxel_UI_Loader::register(
-    '0.17.1',
+    '0.17.2',
     __DIR__ . '/vendor/perxel-ui',
     plugins_url( 'vendor/perxel-ui', __FILE__ )
 );
 ```
 
 The version string passed here is what the "highest wins" loader compares -
-keep it equal to the tag you vendored (currently 0.17.1).
+keep it equal to the tag you vendored (currently 0.17.2).
 
 ### 3. Use it in an admin-page callback
 
@@ -134,7 +134,7 @@ Perxel_UI_Layout::close();
 | `progress_bar( $pct, $args )` | Standalone bar. `$args`: `id`, `label`. |
 | `stat_grid( $tiles )` | Tile: `label`, `value`, `sub`, `bar` (0-100\|null), `tone` (`good\|warn\|bad`). |
 | `card( $args )` | `title`, `body`, `actions`, `id`, `class`. |
-| `rows( $groups )` | iOS-style grouped settings list. Flat row list, or groups `[ 'title' => …, 'rows' => [ … ] ]`. Row: `label` left, `content` right, plus `sub`, `tone`, `icon`, `stacked` (label on its own line, control full-width beneath - for a long field / `<textarea>`). A row with a `summary` key is a native `<details>` disclosure. A group with `'danger' => true` is a destructive zone; a group `note` is a muted footnote. |
+| `rows( $groups )` | iOS-style grouped settings list. Flat row list, or groups `[ 'title' => …, 'rows' => [ … ] ]`. Row: `label` left, `content` right, plus `sub`, `tone`, `icon` (`good`/`warn`/`bad`/`muted` status dot, or trusted-HTML glyph). A row with a `summary` key is a native `<details>` disclosure. A group takes `title_action` (trusted HTML pinned right of the title), `'danger' => true` (destructive zone), and `note` (muted footnote). |
 | `toggle( $args )` | A checkbox rendered as an iOS switch. `name`, `checked`, `value`, `id`, `form`, `label`. |
 | `checkbox_group( $args )` | A "pick several" list rendered as selectable pills. `options`, `name`, `form`, `selected`. |
 | `code( $text, $args )` | Read-only preformatted block - scrolls sideways. `$args`: `label`, `id`. |
@@ -151,6 +151,17 @@ echo Perxel_UI::rows( $groups ); // phpcs:ignore WordPress.Security.EscapeOutput
 ```
 
 ---
+
+## UI rules
+
+- **No em dashes** (or en dashes) anywhere - strings, comments, docs. Plain
+  hyphen, spaced when it joins clauses.
+- **A row with an input does not also carry an action button.** Space in the
+  value slot is tight. Either auto-run the action a short debounce after the
+  user stops typing, or lift the action to the group's `title_action`.
+- Configuration lives on its own screen, away from the action it configures, so
+  a client can be told "go here, click this, done". One primary action per
+  screen (pinned in the sticky title bar via `open()`'s `actions`).
 
 ## What belongs in the kit
 
@@ -175,7 +186,7 @@ loader tolerates its absence.
 
 | Plugin | Vendored version |
 | --- | --- |
-| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.17.1 (first consumer) |
+| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.17.2 (first consumer) |
 | [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.15.0 (copied `ui/`; migrates later) |
 
 ## License
