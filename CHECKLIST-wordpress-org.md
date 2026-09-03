@@ -1,8 +1,8 @@
-# WordPress.org submission checklist — Perxel plugins
+# WordPress.org submission checklist - Perxel plugins
 
 Distilled from the first submission (`perxel-image-optimizer` 1.0.0). Do these
 from day one of a new plugin; retrofitting them later is the expensive path.
-Nothing here is `ui/`-specific — it ships in `ui/` only because `ui/` is the
+Nothing here is `ui/`-specific - it ships in `ui/` only because `ui/` is the
 folder every Perxel plugin already copies verbatim.
 
 ---
@@ -27,7 +27,7 @@ folder every Perxel plugin already copies verbatim.
 ```
 
 - **No `Update URI:` header.** A value other than the `.org` slug tells WP core
-  to skip wordpress.org for updates — it silently breaks auto-update for every
+  to skip wordpress.org for updates - it silently breaks auto-update for every
   user. Only set it for plugins hosted *off* `.org`.
 - `Version` must match the constant (`define( '<PREFIX>_VERSION', '1.0.0' )`),
   `readme.txt` `Stable tag`, and the git tag. `release.yml` enforces tag==header.
@@ -40,7 +40,7 @@ before every submission. (Agent tip: `GET .../readme-validator/?output_format=md
 with `--data-urlencode "readme@readme.txt"` returns a clean pass/fail.)
 
 - `Contributors:` = real wordpress.org usernames only. The plugin-header
-  `Author:` is **not** shown on the `.org` listing — the listing's "By …" line
+  `Author:` is **not** shown on the `.org` listing - the listing's "By …" line
   comes from `Contributors:`. To publish under `perxel`, register that account
   and submit the plugin with it (submitter = initial owner/committer).
 - `Tested up to:` must be a really-released WP version. Bump it every release.
@@ -48,13 +48,13 @@ with `--data-urlencode "readme@readme.txt"` returns a clean pass/fail.)
   markup.
 - Sections: `== Description ==`, `== Installation ==`, `== FAQ ==`,
   `== Changelog ==`. `== Screenshots ==` / `== Upgrade Notice ==` are optional
-  (validator only *notes* their absence) — add screenshots post-approval via
+  (validator only *notes* their absence) - add screenshots post-approval via
   SVN `/assets/`.
 
 ## 3. No artificial restrictions
 
 `.org` guidelines forbid license gates, paywalls, time-limited trials, usage
-quotas, and premium-only core features. Perxel plugins are fully free — say so
+quotas, and premium-only core features. Perxel plugins are fully free - say so
 in the description ("free, no upsell").
 
 ## 4. Security baseline (every request path)
@@ -63,7 +63,7 @@ in the description ("free, no upsell").
   `check_ajax_referer` / `wp_verify_nonce`) *before the first read* of
   `$_POST` / `$_GET` / `$_REQUEST` in the same function. PHPCS / Plugin Check
   flag a superglobal read that textually precedes the check even when a helper
-  would have caught it — reorder, don't rely on the helper.
+  would have caught it - reorder, don't rely on the helper.
 - **Capability check** on every `admin_post_*` / `wp_ajax_*` handler
   (`current_user_can( 'manage_options' )`, or `edit_post` for per-object).
 - **Sanitize on input** (`absint`, `sanitize_text_field( wp_unslash( … ) )`,
@@ -87,7 +87,7 @@ Prefer `WP_Query` / `get_posts` / core APIs. When a grouped `COUNT`/`SUM`, a
 
 ## 6. Filesystem operations
 
-- Deleting files: `wp_delete_file( $path )` — not `@unlink()`. It swallows the
+- Deleting files: `wp_delete_file( $path )` - not `@unlink()`. It swallows the
   warning internally, so no `@` and no `NoSilencedErrors` finding. It returns
   void; check success with `! file_exists( $path )`.
 - `.htaccess`: only ever via core `insert_with_markers( $path, $marker, $lines )`
@@ -101,19 +101,19 @@ Prefer `WP_Query` / `get_posts` / core APIs. When a grouped `COUNT`/`SUM`, a
 
 Never write `.htaccess` (or any server config) on activation or silently on
 `admin_init`. Default the setting **off**; enable it only on an explicit user
-action. Make that action reachable where the user already is — a pre-checked
+action. Make that action reachable where the user already is - a pre-checked
 box in the primary flow, and/or a one-click button in the "done but not wired
-up" state — not just a buried Settings toggle. Removal must be one step and
+up" state - not just a buried Settings toggle. Removal must be one step and
 must clean up.
 
 ## 8. Bundled libraries
 
 - Ship human-readable source (unminified JS/CSS). No build step.
-- A vendored runtime lib (e.g. Action Scheduler) is fine — commit it, document
+- A vendored runtime lib (e.g. Action Scheduler) is fine - commit it, document
   the refresh procedure, list its dev-only siblings in `.distignore`.
 - Don't bundle anything WP core already provides (jQuery, etc.).
 
-## 9. PHPCS — keep `composer run lint` green from commit 1
+## 9. PHPCS - keep `composer run lint` green from commit 1
 
 `composer.json` dev deps: `wp-coding-standards/wpcs:^3`,
 `phpcompatibility/phpcompatibility-wp`, `dealerdirect/phpcodesniffer-composer-installer`.
@@ -122,10 +122,10 @@ Start from this plugin's `phpcs.xml.dist`. It runs the base `WordPress` standard
 and curates it:
 
 - `testVersion` / `minimum_supported_wp_version` match the plugin headers.
-- `WordPress.NamingConventions.PrefixAllGlobals` — declare every prefix
+- `WordPress.NamingConventions.PrefixAllGlobals` - declare every prefix
   (`<prefix>`, `<PREFIX>`, `Namespace\`, plus `perxel_ui` / `PERXEL_UI` /
   `Perxel_UI` / `pxui` for the kit).
-- `WordPress.WP.I18n` — declare the text domain.
+- `WordPress.WP.I18n` - declare the text domain.
 - Excluded (house style, mostly WP-Docs sniffs wpcs 3.4 folded into base):
   `WordPress.Files.FileName` (PSR-4-ish `Ucfirst.php` autoloader),
   `Squiz.Commenting.FileComment`, `Generic.Commenting.DocComment.MissingShort`,
@@ -135,15 +135,15 @@ and curates it:
 - `NonPrefixedVariableFound` excluded for `includes/views/*`, `ui/partials/*`,
   `uninstall.php` (procedural / include-scope, not real globals).
 
-Rule: never silence a *new, real* finding to keep lint green — fix the code or
+Rule: never silence a *new, real* finding to keep lint green - fix the code or
 add a reasoned inline ignore. `phpcbf` fixes alignment; review its diff, it
 touches whatever the `<file>` scope covers.
 
 ## 10. Plugin Check
 
 CI runs `wordpress/plugin-check-action@v1` (see `.github/workflows/lint.yml`).
-It respects inline `phpcs:ignore`, not `phpcs.xml.dist` exclusions — so the
-per-call-site ignores in §5–6 are what keep it quiet. Its ruleset does **not**
+It respects inline `phpcs:ignore`, not `phpcs.xml.dist` exclusions - so the
+per-call-site ignores in §5-6 are what keep it quiet. Its ruleset does **not**
 enforce the §9 doc/filename sniffs, so those exclusions are lint-only.
 
 ## 11. Build & dist
@@ -166,5 +166,5 @@ enforce the §9 doc/filename sniffs, so those exclusions are lint-only.
    `svn cp trunk tags/<version>` so `Stable tag` resolves. Add
    icon/banner/screenshots under `assets/`.
 5. Releases thereafter: bump version in 4 places (header, constant, readme
-   `Stable tag`, changelog), tag, GitHub Release — `release.yml` builds the zip;
+   `Stable tag`, changelog), tag, GitHub Release - `release.yml` builds the zip;
    with SVN secrets it also pushes to `.org`.
