@@ -3,6 +3,15 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.17.4
+
+- Row is a firm two-column layout: the label side takes the space that is
+  left, the value column is capped at 300px (and shrinks below that on a narrow
+  screen). No flex-grow contest between the two. A text field / textarea fills
+  the 300px column so all fields line up.
+- Below 782px the row stacks: label on top, value column full width beneath.
+- Reverts the `.pxui-row--field` growth from 0.17.3.
+
 ## 0.17.3
 
 - Group `title_action` renders as a small underlined link, not a full button.
