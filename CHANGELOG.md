@@ -3,6 +3,15 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.18.0
+
+- **Removed `stat_grid()`** and every `.pxui-stat*` style. The tile grid never
+  sat in the "icon / label / content / disclosure" row vocabulary and read as a
+  second, competing card system on a screen that already uses `rows()`. Show
+  figures as a `rows()` group instead: `label` left, the number as `content`
+  right, `sub` for the qualifier, `tone` for good/warn/bad. Consumers must
+  re-vendor.
+
 ## 0.17.4
 
 - Row is a firm two-column layout: the label side takes the space that is

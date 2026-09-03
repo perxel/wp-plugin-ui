@@ -14,7 +14,7 @@ replacement for it.
   plugin that ships a copy, so a stale copy in one plugin can never fatal or
   restyle another.
 
-Current version: **0.17.4** - see [`CHANGELOG.md`](CHANGELOG.md).
+Current version: **0.18.0** - see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
@@ -50,7 +50,7 @@ echo "vendor/perxel-ui/ is now at v${VERSION}"
 ```
 
 ```sh
-bin/update-ui.sh 0.17.4
+bin/update-ui.sh 0.18.0
 ```
 
 Commit `vendor/perxel-ui/` (add a `.gitignore` exception if `vendor/` is
@@ -64,14 +64,14 @@ In the plugin's main file, after its own constants:
 ```php
 require_once __DIR__ . '/vendor/perxel-ui/loader.php';
 Perxel_UI_Loader::register(
-    '0.17.4',
+    '0.18.0',
     __DIR__ . '/vendor/perxel-ui',
     plugins_url( 'vendor/perxel-ui', __FILE__ )
 );
 ```
 
 The version string passed here is what the "highest wins" loader compares -
-keep it equal to the tag you vendored (currently 0.17.4).
+keep it equal to the tag you vendored (currently 0.18.0).
 
 ### 3. Use it in an admin-page callback
 
@@ -132,7 +132,6 @@ Perxel_UI_Layout::close();
 | `enqueue()` | Registers the kit CSS/JS under the shared `perxel-ui` handle. |
 | `notice( $type, $html, $args )` | `success\|warning\|error\|info`, on WP `.notice`. `$args`: `dismissible`, `inline`. |
 | `progress_bar( $pct, $args )` | Standalone bar. `$args`: `id`, `label`. |
-| `stat_grid( $tiles )` | Tile: `label`, `value`, `sub`, `bar` (0-100\|null), `tone` (`good\|warn\|bad`). |
 | `card( $args )` | `title`, `body`, `actions`, `id`, `class`. |
 | `rows( $groups )` | iOS-style grouped settings list. Flat row list, or groups `[ 'title' => …, 'rows' => [ … ] ]`. Row: `label` left, `content` right, plus `sub`, `tone`, `icon` (`good`/`warn`/`bad`/`muted` status dot, or trusted-HTML glyph). A row with a `summary` key is a native `<details>` disclosure. A group takes `title_action` (trusted HTML pinned right of the title), `'danger' => true` (destructive zone), and `note` (muted footnote). |
 | `toggle( $args )` | A checkbox rendered as an iOS switch. `name`, `checked`, `value`, `id`, `form`, `label`. |
@@ -166,7 +165,7 @@ echo Perxel_UI::rows( $groups ); // phpcs:ignore WordPress.Security.EscapeOutput
 ## What belongs in the kit
 
 - **In the kit:** anything another Perxel plugin could plausibly reuse - layout,
-  notices, progress bars, stat tiles, cards, row groups, tokens.
+  notices, progress bars, cards, row groups, tokens.
 - **In the plugin:** anything specific to that plugin's domain (its own widgets,
   domain-specific tables, dialogs). Plugin CSS/JS may be inline or in the
   plugin's own `assets/`.
@@ -186,7 +185,7 @@ loader tolerates its absence.
 
 | Plugin | Vendored version |
 | --- | --- |
-| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.17.4 (first consumer) |
+| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.18.0 (first consumer) |
 | [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.15.0 (copied `ui/`; migrates later) |
 
 ## License
