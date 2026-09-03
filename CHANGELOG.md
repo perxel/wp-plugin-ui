@@ -3,6 +3,20 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.19.0
+
+- **Checkbox default flipped.** An `<input type="checkbox">` in `.pxui-wrap` is
+  now a square box with a brand tick - the plain, expected control. The iOS
+  switch is opt-in: add `.pxui-toggle` to the checkbox, or call
+  `Perxel_UI::toggle()` (which now emits that class). Radios and the
+  `checkbox_group()` pills are unchanged.
+- **Removed the `.pxui-checkbox` opt-out** - the bare checkbox already looks
+  that way. Delete the class where you used it; add `.pxui-toggle` anywhere you
+  actually wanted the switch.
+- Breaking visual change: any bare checkbox in a consumer that was relying on
+  the switch look now shows a box. Consumers must re-vendor and audit their
+  checkboxes.
+
 ## 0.18.0
 
 - **Removed `stat_grid()`** and every `.pxui-stat*` style. The tile grid never

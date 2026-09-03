@@ -14,7 +14,7 @@ replacement for it.
   plugin that ships a copy, so a stale copy in one plugin can never fatal or
   restyle another.
 
-Current version: **0.18.0** - see [`CHANGELOG.md`](CHANGELOG.md).
+Current version: **0.19.0** - see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
@@ -50,7 +50,7 @@ echo "vendor/perxel-ui/ is now at v${VERSION}"
 ```
 
 ```sh
-bin/update-ui.sh 0.18.0
+bin/update-ui.sh 0.19.0
 ```
 
 Commit `vendor/perxel-ui/` (add a `.gitignore` exception if `vendor/` is
@@ -64,14 +64,14 @@ In the plugin's main file, after its own constants:
 ```php
 require_once __DIR__ . '/vendor/perxel-ui/loader.php';
 Perxel_UI_Loader::register(
-    '0.18.0',
+    '0.19.0',
     __DIR__ . '/vendor/perxel-ui',
     plugins_url( 'vendor/perxel-ui', __FILE__ )
 );
 ```
 
 The version string passed here is what the "highest wins" loader compares -
-keep it equal to the tag you vendored (currently 0.18.0).
+keep it equal to the tag you vendored (currently 0.19.0).
 
 ### 3. Use it in an admin-page callback
 
@@ -134,7 +134,7 @@ Perxel_UI_Layout::close();
 | `progress_bar( $pct, $args )` | Standalone bar. `$args`: `id`, `label`. |
 | `card( $args )` | `title`, `body`, `actions`, `id`, `class`. |
 | `rows( $groups )` | iOS-style grouped settings list. Flat row list, or groups `[ 'title' => …, 'rows' => [ … ] ]`. Row: `label` left, `content` right, plus `sub`, `tone`, `icon` (`good`/`warn`/`bad`/`muted` status dot, or trusted-HTML glyph). A row with a `summary` key is a native `<details>` disclosure. A group takes `title_action` (trusted HTML pinned right of the title), `'danger' => true` (destructive zone), and `note` (muted footnote). |
-| `toggle( $args )` | A checkbox rendered as an iOS switch. `name`, `checked`, `value`, `id`, `form`, `label`. |
+| `toggle( $args )` | An `<input type="checkbox" class="pxui-toggle">` - the kit renders it as an iOS switch. `name`, `checked`, `value`, `id`, `form`, `label`. A bare checkbox (no class) is a square box with a tick. |
 | `checkbox_group( $args )` | A "pick several" list rendered as selectable pills. `options`, `name`, `form`, `selected`. |
 | `code( $text, $args )` | Read-only preformatted block - scrolls sideways. `$args`: `label`, `id`. |
 | `spinner()` | Inline CSS loading spinner. |
@@ -185,7 +185,7 @@ loader tolerates its absence.
 
 | Plugin | Vendored version |
 | --- | --- |
-| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.18.0 (first consumer) |
+| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.19.0 (first consumer) |
 | [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.15.0 (copied `ui/`; migrates later) |
 
 ## License
