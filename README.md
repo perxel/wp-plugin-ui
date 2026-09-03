@@ -14,7 +14,7 @@ replacement for it.
   plugin that ships a copy, so a stale copy in one plugin can never fatal or
   restyle another.
 
-Current version: **0.17.2** - see [`CHANGELOG.md`](CHANGELOG.md).
+Current version: **0.17.3** - see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
@@ -50,7 +50,7 @@ echo "vendor/perxel-ui/ is now at v${VERSION}"
 ```
 
 ```sh
-bin/update-ui.sh 0.17.2
+bin/update-ui.sh 0.17.3
 ```
 
 Commit `vendor/perxel-ui/` (add a `.gitignore` exception if `vendor/` is
@@ -64,14 +64,14 @@ In the plugin's main file, after its own constants:
 ```php
 require_once __DIR__ . '/vendor/perxel-ui/loader.php';
 Perxel_UI_Loader::register(
-    '0.17.2',
+    '0.17.3',
     __DIR__ . '/vendor/perxel-ui',
     plugins_url( 'vendor/perxel-ui', __FILE__ )
 );
 ```
 
 The version string passed here is what the "highest wins" loader compares -
-keep it equal to the tag you vendored (currently 0.17.2).
+keep it equal to the tag you vendored (currently 0.17.3).
 
 ### 3. Use it in an admin-page callback
 
@@ -186,7 +186,7 @@ loader tolerates its absence.
 
 | Plugin | Vendored version |
 | --- | --- |
-| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.17.2 (first consumer) |
+| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.17.3 (first consumer) |
 | [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.15.0 (copied `ui/`; migrates later) |
 
 ## License

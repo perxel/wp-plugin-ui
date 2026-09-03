@@ -3,6 +3,11 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.17.3
+
+- Group `title_action` renders as a small underlined link, not a full button.
+- A row whose content is a wide text input or a textarea now gets `.pxui-row--field`: the value slot grows and the field fills it, so long values (API key, model id) are readable and rows line up. Auto-detected from the content HTML.
+
 ## 0.17.2
 
 - **Removed `'stacked'`** (added in 0.17.0, never shipped in a consumer). It was
