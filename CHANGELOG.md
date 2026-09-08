@@ -3,6 +3,35 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.22.0
+
+- **`media()`** - a WordPress media-library picker (`Perxel_UI::media( $args )`):
+  a hidden `<input>` holding the chosen attachment ID, a live preview, and
+  Choose / Remove controls, wired to the native `wp.media` frame by `ui.js`.
+  `$args`: `name`, `value` (int, or a list / CSV of IDs), `type`
+  (`''`/`image`/`audio`/`video` - the library filter), `multiple` (value
+  becomes a comma-joined list), `form`, `label`, `preview_size`. The screen
+  must call `wp_enqueue_media()` itself - core only auto-loads the media
+  library on post-edit screens. Read the value back with
+  `absint( $_POST[ $name ] )`, or `wp_parse_id_list()` for a `multiple` field.
+  Additive.
+- **`color()`** - a colour picker (`Perxel_UI::color( $args )`): a native
+  `<input type="color">` swatch beside a hex text field, kept in sync by
+  `ui.js`. The text field carries the name, so it still works with JS off.
+  `$args`: `name`, `value` (`#rrggbb`), `form`, `label`. No jQuery / Iris.
+  Additive.
+- **`ui.js`** gains the media and colour behaviours (blocks 2 and 3). The
+  media hidden input is left out of the dirty-guard snapshot, so a pick calls
+  `pxui.dirtyGuard.mark()`.
+- The showcase screen now calls `wp_enqueue_media()` and demonstrates both
+  new components.
+- **Row action buttons.** A lone action button (or a `danger` group's
+  buttons / links) in a `rows()` row is now `button button-small` - a plain
+  `.button` was too tall for the row rhythm. `.pxui-row__content .button.button-small`
+  gets a flex-cross-axis guard only; bare `.button` is untouched, so it still
+  matches `.button` everywhere else. Documented in "Improving a screen"; the
+  showcase's danger group models it.
+
 ## 0.21.0
 
 - **`meter()`** - a compact inline progress meter (`Perxel_UI::meter( $pct, $args )`)

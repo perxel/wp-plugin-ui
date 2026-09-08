@@ -14,7 +14,7 @@ replacement for it.
   plugin that ships a copy, so a stale copy in one plugin can never fatal or
   restyle another.
 
-Current version: **0.21.0** - see [`CHANGELOG.md`](CHANGELOG.md).
+Current version: **0.22.0** - see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
@@ -50,7 +50,7 @@ echo "vendor/perxel-ui/ is now at v${VERSION}"
 ```
 
 ```sh
-bin/update-ui.sh 0.21.0
+bin/update-ui.sh 0.22.0
 ```
 
 Commit `vendor/perxel-ui/` (add a `.gitignore` exception if `vendor/` is
@@ -64,14 +64,14 @@ In the plugin's main file, after its own constants:
 ```php
 require_once __DIR__ . '/vendor/perxel-ui/loader.php';
 Perxel_UI_Loader::register(
-    '0.21.0',
+    '0.22.0',
     __DIR__ . '/vendor/perxel-ui',
     plugins_url( 'vendor/perxel-ui', __FILE__ )
 );
 ```
 
 The version string passed here is what the "highest wins" loader compares -
-keep it equal to the tag you vendored (currently 0.20.0).
+keep it equal to the tag you vendored (currently 0.22.0).
 
 ### 3. Use it in an admin-page callback
 
@@ -138,6 +138,8 @@ Perxel_UI_Layout::close();
 | `toggle( $args )` | An `<input type="checkbox" class="pxui-toggle">` - the kit renders it as an iOS switch. `name`, `checked`, `value`, `id`, `form`, `label`. A bare checkbox (no class) is a square box with a tick. |
 | `checkbox_group( $args )` | A "pick several" list rendered as selectable pills. `options`, `name`, `form`, `selected`. |
 | `code( $text, $args )` | Read-only preformatted block - scrolls both ways, height-capped at `24em`. `$args`: `label`, `id`. |
+| `media( $args )` | WordPress media-library picker - hidden `<input>` of attachment ID(s), preview, Choose / Remove. `name`, `value` (int or CSV/list), `type` (`''`/`image`/`audio`/`video`), `multiple`, `form`, `label`, `preview_size`. Wired to `wp.media` by `ui.js`; **the screen must call `wp_enqueue_media()`**. Read back with `absint()` / `wp_parse_id_list()`. |
+| `color( $args )` | Colour picker - a native `<input type="color">` swatch beside a hex text field (which carries the `name`), synced by `ui.js`. `name`, `value` (`#rrggbb`), `form`, `label`. No jQuery. |
 | `spinner()` | Inline CSS loading spinner. |
 
 ### Escaping contract
@@ -159,6 +161,8 @@ The kit ships a few lines of vanilla JS, no dependencies:
 | Hook | Effect |
 | --- | --- |
 | `data-pxui-confirm="message"` on any element | Click is blocked unless the native confirm is accepted. For destructive actions. |
+| `Perxel_UI::media()` markup | Choose opens the native `wp.media` frame, Remove clears; chosen attachment IDs are kept as a comma-joined string in the hidden input. Needs `wp_enqueue_media()` on the screen. |
+| `Perxel_UI::color()` markup | Keeps the native `<input type="color">` swatch and the hex text field in sync. |
 | `data-pxui-dirty-guard` on a `<form>` | The form is snapshotted on load; if a field then differs, leaving the page trips the browser's native "Leave site?" prompt. Cleared when the form submits. `[disabled]` / `[readonly]` / `[type=hidden]` / button fields and anything under `data-pxui-dirty-ignore` are excluded. Script that changes state the user should be warned about calls `pxui.dirtyGuard.mark( form )` (`clear` / `resnapshot` undo it). The prompt text is fixed by the browser. |
 
 ## UI rules
@@ -168,6 +172,9 @@ The kit ships a few lines of vanilla JS, no dependencies:
 - **A row with an input does not also carry an action button.** Space in the
   value slot is tight. Either auto-run the action a short debounce after the
   user stops typing, or lift the action to the group's `title_action`.
+- **A lone action button in a row is `button button-small`** (core's small
+  variant) - a plain `.button` is too tall for the row's rhythm. Same for the
+  buttons/links in a `danger` group.
 - Configuration lives on its own screen, away from the action it configures, so
   a client can be told "go here, click this, done". One primary action per
   screen (pinned in the sticky title bar via `open()`'s `actions`).
@@ -239,6 +246,7 @@ loader tolerates its absence.
 | Plugin | Vendored version |
 | --- | --- |
 | [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.21.0 (first consumer) |
+| [wp-khatra-showcase](https://github.com/perxel/wp-khatra-showcase) | 0.22.0 (`media()` / `color()`) |
 | [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.15.0 (copied `ui/`; migrates later) |
 
 ## License
