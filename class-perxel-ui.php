@@ -487,7 +487,7 @@ final class Perxel_UI {
 		$out .= '</span>';
 
 		$out .= '<span class="pxui-media__actions">';
-		$out .= '<button type="button" class="button pxui-media__choose">' . esc_html( $label ) . '</button>';
+		$out .= '<button type="button" class="button button-small pxui-media__choose">' . esc_html( $label ) . '</button>';
 		$out .= '<button type="button" class="pxui-media__clear"' . ( $ids ? '' : ' hidden' ) . '>'
 			. esc_html( $multiple ? 'Remove all' : 'Remove' ) . '</button>';
 		$out .= '</span>';

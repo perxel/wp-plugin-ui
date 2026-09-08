@@ -3,6 +3,12 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.22.1
+
+- `media()`'s Choose button is `button button-small` - it is a lone action
+  button in a `rows()` row, so it follows the same rule as every other row
+  action. Markup-only.
+
 ## 0.22.0
 
 - **`media()`** - a WordPress media-library picker (`Perxel_UI::media( $args )`):
