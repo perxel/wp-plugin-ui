@@ -3,6 +3,12 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.22.2
+
+- A `.button-small` in a `rows()` row is `min-height:30px` (inline-flex,
+  centred) so it lines up with the row's 30px text fields. Scoped to
+  `.pxui-row__content .button.button-small`; bare `.button` untouched.
+
 ## 0.22.1
 
 - `media()`'s Choose button is `button button-small` - it is a lone action

@@ -94,12 +94,16 @@
 .pxui-row__content input { box-shadow:none; }
 
 /* A lone action button in a row uses core's `.button-small` (add the class in
-   markup). Only keep it from stretching on the flex cross-axis - never
+   markup). Keep it from stretching on the flex cross-axis and match the 30px
+   height of the row's text fields so it sits on the same baseline - never
    restyle bare `.button` here, it must still match `.button` everywhere
    else. */
 .pxui-row__content .button.button-small {
     flex:0 0 auto;
     align-self:center;
+    display:inline-flex;
+    align-items:center;
+    min-height:30px;
 }
 
 /* A <select> as row content reads as the row's value: no chrome at rest,
