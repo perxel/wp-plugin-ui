@@ -14,7 +14,7 @@ replacement for it.
   plugin that ships a copy, so a stale copy in one plugin can never fatal or
   restyle another.
 
-Current version: **0.22.2** - see [`CHANGELOG.md`](CHANGELOG.md).
+Current version: **0.23.0** - see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
@@ -50,7 +50,7 @@ echo "vendor/perxel-ui/ is now at v${VERSION}"
 ```
 
 ```sh
-bin/update-ui.sh 0.22.2
+bin/update-ui.sh 0.23.0
 ```
 
 Commit `vendor/perxel-ui/` (add a `.gitignore` exception if `vendor/` is
@@ -64,14 +64,14 @@ In the plugin's main file, after its own constants:
 ```php
 require_once __DIR__ . '/vendor/perxel-ui/loader.php';
 Perxel_UI_Loader::register(
-    '0.22.2',
+    '0.23.0',
     __DIR__ . '/vendor/perxel-ui',
     plugins_url( 'vendor/perxel-ui', __FILE__ )
 );
 ```
 
 The version string passed here is what the "highest wins" loader compares -
-keep it equal to the tag you vendored (currently 0.22.2).
+keep it equal to the tag you vendored (currently 0.23.0).
 
 ### 3. Use it in an admin-page callback
 
@@ -125,11 +125,12 @@ Perxel_UI_Layout::close();
 | `close()` | Renders the footer, then closes what `open()` opened. |
 | `set_page_titles( array $map, $plugin = '' )` | `[ page_slug => page name ]` + a plugin name. Own the browser `<title>` for the kit's screens: the tab reads `Site • Page • Plugin` instead of the bare " ‹ Site - WordPress" a `remove_submenu_page()`d screen is left with. Call on `admin_menu`. Additive, idempotent. |
 
-`Perxel_UI` (each returns an HTML string - `echo` it)
+`Perxel_UI` (each returns an HTML string - echo it through `wp_kses( …, Perxel_UI::allowed_html() )`)
 
 | Method | Purpose |
 | --- | --- |
 | `enqueue()` | Registers the kit CSS/JS under the shared `perxel-ui` handle. |
+| `allowed_html()` | The `wp_kses()` allowlist for kit markup (see "Escaping contract"). |
 | `notice( $type, $html, $args )` | `success\|warning\|error\|info`, on WP `.notice`. `$args`: `dismissible`, `inline`. |
 | `progress_bar( $pct, $args )` | Standalone full-width bar. `$args`: `id`, `label`. |
 | `meter( $pct, $args )` | Compact inline meter for a `rows()` value slot - a short track with the percentage as its label, at the row's height. `$args`: `id` (live updates target `.pxui-meter__fill` / `.pxui-meter__text`), `text` (default `"N%"`, `''` hides it), `width` (px, default 96), `tone` (`good`/`warn`/`bad`). |
@@ -146,11 +147,17 @@ Perxel_UI_Layout::close();
 
 The helpers escape their own structural markup and the `title` / `label` fields.
 `body`, `actions`, `value`, `content`, `sub` are treated as **trusted HTML** -
-the caller escapes their dynamic parts:
+the caller escapes their dynamic parts. Then escape late: echo every helper's
+output through `wp_kses()` with the kit's allowlist, never behind a
+`phpcs:ignore` (WordPress.org reviewers reject "escaped earlier" echoes):
 
 ```php
-echo Perxel_UI::rows( $groups ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Perxel_UI escapes internally.
+echo wp_kses( Perxel_UI::rows( $groups ), Perxel_UI::allowed_html() );
 ```
+
+`Perxel_UI::allowed_html()` is `wp_kses_post()`'s tag set plus form controls,
+`<details>` / `<dialog>`, inline SVG, `data-*` and the kit's ARIA attributes.
+It has no `<script>`, `<style>` or `on*` handlers - wire behaviour in JS.
 
 ---
 
@@ -245,9 +252,11 @@ loader tolerates its absence.
 
 | Plugin | Vendored version |
 | --- | --- |
-| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.21.0 (first consumer) |
+| [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.23.0 |
+| [wp-perxel-toolkit](https://github.com/perxel/wp-perxel-toolkit) | 0.23.0 |
+| [wp-plugin-starter](https://github.com/perxel/wp-plugin-starter) | 0.23.0 |
+| [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.23.0 |
 | [wp-khatra-showcase](https://github.com/perxel/wp-khatra-showcase) | 0.22.2 (`media()` / `color()`) |
-| [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.15.0 (copied `ui/`; migrates later) |
 
 ## License
 
