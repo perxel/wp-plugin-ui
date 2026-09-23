@@ -68,9 +68,11 @@ in the description ("free, no upsell").
   (`current_user_can( 'manage_options' )`, or `edit_post` for per-object).
 - **Sanitize on input** (`absint`, `sanitize_text_field( wp_unslash( … ) )`,
   `sanitize_key`), **escape on output** (`esc_html`, `esc_attr`, `esc_url`).
-  Server-rendered views: escape every dynamic value inline; a
-  `// phpcs:disable WordPress.Security.EscapeOutput...` at the top of a view is
-  only OK with an inline note that structure comes from an escaping helper.
+  Server-rendered views: escape every dynamic value inline, **and escape late**:
+  an echo of built HTML (kit markup, a pre-rendered cell) goes through
+  `wp_kses( $html, Perxel_UI::allowed_html() )` or a narrower allowlist. Never a
+  file-wide `phpcs:disable WordPress.Security.EscapeOutput`, and never
+  `echo $html; // phpcs:ignore ... -- escaped earlier`: reviewers flag both.
 - One `admin-ajax` endpoint per genuine AJAX need (a poll, per-row buttons);
   everything else is a plain `admin_post` form POST → handler → redirect.
 

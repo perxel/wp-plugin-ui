@@ -3,6 +3,17 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.23.0
+
+- **`allowed_html()`** - the `wp_kses()` allowlist for kit markup
+  (`wp_kses_post()`'s tags plus form controls, `<details>` / `<dialog>`,
+  inline SVG, `data-*`, the kit's ARIA attributes). Consumers now echo kit
+  output as `echo wp_kses( $html, Perxel_UI::allowed_html() );` instead of a
+  `phpcs:ignore`d `echo` - WordPress.org review rejects "escaped earlier"
+  echoes. Additive.
+- The layout's title-bar `actions` slot is echoed through the same
+  `wp_kses()` allowlist.
+
 ## 0.22.2
 
 - A `.button-small` in a `rows()` row is `min-height:30px` (inline-flex,
