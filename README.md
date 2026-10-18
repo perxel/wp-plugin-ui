@@ -253,10 +253,10 @@ loader tolerates its absence.
 | Plugin | Vendored version |
 | --- | --- |
 | [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.23.0 |
-| [wp-perxel-toolkit](https://github.com/perxel/wp-perxel-toolkit) | 0.23.0 |
+| wp-perxel-toolkit (private) | 0.23.0 |
 | [wp-plugin-starter](https://github.com/perxel/wp-plugin-starter) | 0.23.0 |
 | [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.23.0 |
-| [wp-khatra-showcase](https://github.com/perxel/wp-khatra-showcase) | 0.22.2 (`media()` / `color()`) |
+| wp-khatra-showcase (private) | 0.22.2 (`media()` / `color()`) |
 
 ## License
 
