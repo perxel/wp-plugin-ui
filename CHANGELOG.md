@@ -3,6 +3,18 @@
 Versioned independently of any plugin. Within a major version, changes are
 additive only (see `README.md` → "Versioning").
 
+## 0.24.0
+
+- **`Perxel_UI_Commands::add( $plugin, $callback )`** - a plugin's screens and
+  settings in WordPress's command palette (Cmd/Ctrl+K, WordPress 6.9+, every
+  admin screen and the block editor). The callback returns
+  `[ 'name', 'label', 'url', 'keywords' ]` commands for the current user; each
+  shows as "Plugin > Label", is searched by its label and keywords, and opens
+  its URL. One script (`assets/commands.js`) for every plugin on the kit.
+  Loaded by `class-perxel-ui.php`, so an older loader still loads it. Additive.
+- A link to `#<id>` on a kit screen lands clear of the sticky title bar, and
+  the target's cards are marked for a moment.
+
 ## 0.23.0
 
 - **`allowed_html()`** - the `wp_kses()` allowlist for kit markup

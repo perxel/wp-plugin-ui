@@ -125,6 +125,12 @@ Perxel_UI_Layout::close();
 | `close()` | Renders the footer, then closes what `open()` opened. |
 | `set_page_titles( array $map, $plugin = '' )` | `[ page_slug => page name ]` + a plugin name. Own the browser `<title>` for the kit's screens: the tab reads `Site • Page • Plugin` instead of the bare " ‹ Site - WordPress" a `remove_submenu_page()`d screen is left with. Call on `admin_menu`. Additive, idempotent. |
 
+`Perxel_UI_Commands`
+
+| Method | Purpose |
+| --- | --- |
+| `add( $plugin, callable $callback )` | Put a plugin's screens and settings in WordPress's command palette (Cmd/Ctrl+K, WordPress 6.9+). The callback runs only on a screen with the palette and returns `[ [ 'name' => 'my-plugin/x', 'label' => …, 'url' => …, 'keywords' => [ … ] ], … ]` for the current user (check capabilities there). Shown as "Plugin > Label", searched by label and keywords. A URL to `#<id>` on a kit screen scrolls clear of the title bar and marks the target. Call from `admin_init` (the kit boots on `after_setup_theme`). Additive. |
+
 `Perxel_UI` (each returns an HTML string - echo it through `wp_kses( …, Perxel_UI::allowed_html() )`)
 
 | Method | Purpose |
@@ -253,7 +259,7 @@ loader tolerates its absence.
 | Plugin | Vendored version |
 | --- | --- |
 | [wp-ai-translate](https://github.com/perxel/wp-ai-translate) | 0.23.0 |
-| wp-perxel-toolkit (private) | 0.23.0 |
+| wp-perxel-toolkit (private) | 0.24.0 (`Perxel_UI_Commands`) |
 | [wp-plugin-starter](https://github.com/perxel/wp-plugin-starter) | 0.23.0 |
 | [wp-image-optimizer](https://github.com/perxel/wp-image-optimizer) | 0.23.0 |
 | wp-khatra-showcase (private) | 0.22.2 (`media()` / `color()`) |
